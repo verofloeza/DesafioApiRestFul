@@ -16,27 +16,32 @@ routerProductos.post( "/", (req, res, next) => {
 
 routerProductos.get( "/:id", (req, res, next) => {
     let result = productos.getProd(req.params.id);
-    if(result == '"Producto no encontrado"'){
-        res.status(400).json({ error: 'Producto no encontrado' });
+    if(!result){
+        res.status(404).json({ error: 'Producto no encontrado' });
     }else{
-        res.status(200).json(productos.getProd(req.params.id));
+        res.status(200).json(result);
     }
     
     next();
 });
 
 routerProductos.put( "/:id", (req, res, next) => {
-    let result = productos.getProd(req.params.id);
-    if(result == '"Producto no encontrado"'){
-        res.status(400).json({ error: 'Producto no encontrado' });
+    let result = productos.putProd(req.params.id, req.body);
+    if(!result){
+        res.status(404).json({ error: 'Producto no encontrado' });
     }else{
-        res.status(200).json(productos.getProd(req.params.id));
+        res.status(200).json(result);
     }
     next();
 })
 
 routerProductos.delete( "/:id", (req, res, next) => {
-    res.status(204).send(productos.deleteProd(req.params.id));
+    let result = productos.deleteProd(req.params.id);
+    if(!result){
+        res.status(404).json({ error: 'Producto no encontrado' });
+    }else{
+        res.status(200).json(result);
+    }
     next();
 })
 
